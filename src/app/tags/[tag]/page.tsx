@@ -14,12 +14,13 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { tag: string } }): Promise<Metadata> {
-  const tagData = getTag(params.tag);
-  const tagName = tagData?.title || params.tag.charAt(0).toUpperCase() + params.tag.slice(1);
+  const { tag } = await params;
+  const tagData = getTag(tag);
+  const tagName = tagData?.title || tag.charAt(0).toUpperCase() + tag.slice(1);
   const description = tagData?.meta_description || tagData?.description || `Posts tagged with "${tagName}".`;
 
   const baseUrl = siteConfig.url;
-  const pageUrl = `${baseUrl}/tags/${params.tag}`;
+  const pageUrl = `${baseUrl}/tags/${tag}`;
 
   return {
     title: tagData?.meta_title || tagName,
