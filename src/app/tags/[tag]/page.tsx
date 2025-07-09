@@ -37,10 +37,11 @@ export async function generateMetadata({ params }: { params: { tag: string } }):
 }
 
 
-export default function TagPage({ params }: { params: { tag: string } }) {
-  const posts = getPostsByTag(params.tag);
-  const tagData = getTag(params.tag);
-  const tagName = tagData?.title || params.tag.charAt(0).toUpperCase() + params.tag.slice(1);
+export default async function TagPage({ params }: { params: { tag: string } }) {
+  const { tag } = await params;
+  const posts = getPostsByTag(tag);
+  const tagData = getTag(tag);
+  const tagName = tagData?.title || tag.charAt(0).toUpperCase() + tag.slice(1);
   const tagDescription = tagData?.description;
 
   if (posts.length === 0 && !tagData) {
