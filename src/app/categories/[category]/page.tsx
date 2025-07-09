@@ -14,12 +14,13 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { category: string } }): Promise<Metadata> {
-  const categoryData = getCategory(params.category);
-  const categoryName = categoryData?.title || params.category.charAt(0).toUpperCase() + params.category.slice(1);
+  const { category } = await params;
+  const categoryData = getCategory(category);
+  const categoryName = categoryData?.title || category.charAt(0).toUpperCase() + category.slice(1);
   const description = categoryData?.meta_description || categoryData?.description || `Posts filed under the "${categoryName}" category.`;
   
   const baseUrl = siteConfig.url;
-  const pageUrl = `${baseUrl}/categories/${params.category}`;
+  const pageUrl = `${baseUrl}/categories/${category}`;
 
   return {
     title: categoryData?.meta_title || categoryName,
@@ -36,10 +37,11 @@ export async function generateMetadata({ params }: { params: { category: string 
 }
 
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
-  const posts = getPostsByCategory(params.category);
-  const categoryData = getCategory(params.category);
-  const categoryName = categoryData?.title || params.category.charAt(0).toUpperCase() + params.category.slice(1);
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
+  const { category } = await params;
+  const posts = getPostsByCategory(category);
+  const categoryData = getCategory(category);
+  const categoryName = categoryData?.title || category.charAt(0).toUpperCase() + category.slice(1);
   const categoryDescription = categoryData?.description;
 
   if (posts.length === 0 && !categoryData) {
