@@ -2,13 +2,9 @@ import { NextResponse } from 'next/server';
 import RSS from 'rss';
 import { posts } from '@/lib/content';
 import { siteConfig } from '@/lib/site';
-import { headers } from 'next/headers';
 
 export async function GET() {
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = siteConfig.url;
 
   const feed = new RSS({
     title: siteConfig.name,

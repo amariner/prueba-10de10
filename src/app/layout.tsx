@@ -6,13 +6,9 @@ import Footer from '@/components/Footer';
 import React from 'react';
 import { HeadSnippets, BodyStartSnippets, BodyEndSnippets } from '@/components/CodeInjector';
 import { siteConfig } from '@/lib/site';
-import { headers } from 'next/headers';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = siteConfig.url;
 
   return {
     title: {
@@ -49,10 +45,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = siteConfig.url;
 
   const webSiteJsonLd = {
     '@context': 'https://schema.org',

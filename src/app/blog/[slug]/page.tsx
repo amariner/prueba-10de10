@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { siteConfig } from '@/lib/site';
 
 export async function generateStaticParams() {
@@ -22,10 +21,7 @@ export async function generateMetadata({ params }: { params: { slug:string } }):
     };
   }
 
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = siteConfig.url;
 
   const postUrl = `${baseUrl}/blog/${post.slug}`;
   const imageUrl = post.thumbnail ? (post.thumbnail.startsWith('/') ? `${baseUrl}${post.thumbnail}` : `${baseUrl}/placeholder.png`) : `${baseUrl}/placeholder.png`;
@@ -67,10 +63,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = siteConfig.url;
 
   const postUrl = `${baseUrl}/blog/${post.slug}`;
   const imageUrl = post.thumbnail ? (post.thumbnail.startsWith('/') ? `${baseUrl}${post.thumbnail}` : post.thumbnail) : `${baseUrl}/placeholder.png`;

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { slugify } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Card, CardContent } from '@/components/ui/card';
-import { headers } from 'next/headers';
+import { siteConfig } from '@/lib/site';
 
 export async function generateStaticParams() {
   const tags = getAllTags();
@@ -18,10 +18,7 @@ export async function generateMetadata({ params }: { params: { tag: string } }):
   const tagName = tagData?.title || params.tag.charAt(0).toUpperCase() + params.tag.slice(1);
   const description = tagData?.meta_description || tagData?.description || `Posts tagged with "${tagName}".`;
 
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = siteConfig.url;
   const pageUrl = `${baseUrl}/tags/${params.tag}`;
 
   return {
